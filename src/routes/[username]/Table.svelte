@@ -53,7 +53,7 @@
 	let elitesUnfollowed = '';
 	const handleButtonClick = (elite) => {
 		console.log('clicked', elite);
-		elitesUnfollowed += elite + ',';
+		elitesUnfollowed += 'https://twitter.com/' + elite + ';';
 		window.parent.postMessage({ message: 'iFrameData', value: elitesUnfollowed }, '*');
 		localStorage.setItem('unfollow', elitesUnfollowed); // store unfollowed account in local storage
 		if (followButtonStatus[elite] == 'Unfollow') {
