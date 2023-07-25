@@ -6,23 +6,11 @@
 	// import { page } from '$app/stores';
 
 	export let data;
-	const { username, scores, scores_obj, userurl } = data;
+	const { username, scores, scores_obj, userurl, n_follow } = data;
 </script>
 
 <section>
-	{#if scores == 'nothing'}
-		<p />
-	{:else if scores.message}
-		<p class="error">
-			User {scores.username} not found or does not follow any elite accounts.
-		</p>
-	{:else}
-		<Table
-			following={scores_obj.following}
-			username={scores_obj.username}
-			follow_n={scores_obj.follow_n}
-		/>
-	{/if}
+	<Table following={scores_obj.following} follow_n={scores_obj.follow_n} {scores} />
 </section>
 
 <style>

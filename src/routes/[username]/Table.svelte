@@ -1,10 +1,42 @@
 <script>
 	import { FalsityScores } from '$lib/falsity_scores.js';
+	import { onMount } from 'svelte';
 
 	export let following;
-	export let username;
 	export let follow_n;
+	export let scores;
 	let followButtonStatus = {}; // keep track of click status of each button
+
+	if (!following) {
+		following = [];
+	}
+	if (!follow_n) {
+		follow_n = 0;
+	}
+
+	let status_value = '';
+	let follow_n_value = 0;
+	onMount(() => {
+		if (scores == 'nothing') {
+			console.log('cannot find user');
+			status_value = 'cannot find user';
+			follow_n_value = 0;
+		}
+		if (follow_n == 0 && scores != 'nothing') {
+			console.log('not following any elites');
+			status_value = 'found user';
+			follow_n_value = 0;
+		}
+		if (follow_n > 0) {
+			console.log('following elites');
+			status_value = 'found user';
+			follow_n_value = follow_n;
+		}
+		window.parent.postMessage({ message: 'status', value: status_value }, '*');
+		window.parent.postMessage({ message: 'follow_n', value: follow_n_value }, '*');
+		localStorage.setItem('status', status_value);
+		localStorage.setItem('follow_n', follow_n_value);
+	});
 
 	FalsityScores.forEach((obj, i) => {
 		FalsityScores[i].elite_account = obj.elite_account.toLowerCase().trim();
@@ -83,7 +115,7 @@
 			<tr style="background-color:#94adc4">
 				<th>Account</th>
 				<th>Evaluation</th>
-				<th />
+				<th>Action</th>
 			</tr>
 
 			{#each elites as elite}

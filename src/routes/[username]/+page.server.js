@@ -25,17 +25,18 @@ export async function load({ fetch, params }) {
 
 	console.log('Waiting for response...');
 	const response = await resp.json();
+	let n_follow = 0;
+	let scores = "nothing";
 	if (response) {
 		if (response.message) {
 			// console.log("Error: " + response.message);
 			scores_obj = {
 				username: username,
-				inputEntered: false,
 				message: 'cannot find user'
 			};
-			return scores_obj;
 		} else {
 			console.log('Success!');
+			scores = "success";
 			userid = response.twitter_user_id;
 			userid = userid.toString();
 			scores_obj = {
@@ -45,17 +46,15 @@ export async function load({ fetch, params }) {
 				party: response.partisan_score,
 				follow_n: response.num_following,
 				following: response.following,
-				inputEntered: true
 			};
+			n_follow = response.num_following;
 			userurl += username;
-			// let post_outcome = saveSearch();
 		}
 		// console.log('response', response);
 		// console.log('scores_obj', scores_obj);
-		return { username: username, scores: "OK", scores_obj: scores_obj, userurl: userurl };
 	} else {
 		console.log('Fail to retrieve data');
-		return { username: username, scores: "nothing" };
 	}
+	return { username: username, scores: scores, scores_obj: scores_obj, userurl: userurl, n_follow: n_follow };
 }
 
