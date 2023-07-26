@@ -55,8 +55,8 @@
 	};
 
 	const determineColor = (score) => {
-		score = Number(score) * 100;
-		return `rgb(${score * 2.55}, ${255 - score * 2.55}, 0)`;
+		score = Number(score);
+		return `rgba(237, 29, 36, ${score})`;
 	};
 
 	const determineWidthPercent = (score) => {
@@ -100,15 +100,19 @@
 		data[i].i = i + 1;
 	});
 	let elites = data;
+
+	const scoreExplainText =
+		'<p>Dishonesty scores range from <span style="color:#ed1d24; font-weight: bold;">100 (always dishonest)</span> to <span style="color:grey; font-weight: bold;">0 (never dishonest)</span>.</p>';
 </script>
 
 <section>
 	{#if follow_n > 1}
 		<p class="center-text">
-			Below are {follow_n} accounts you follow.
+			Below are {follow_n} accounts you follow. {@html scoreExplainText}
 		</p>
 	{:else}
-		<p class="center-text">Below is an account you follow.</p>{/if}
+		<p class="center-text">Below is an account you follow. {@html scoreExplainText}</p>
+	{/if}
 
 	<div class="center">
 		<table>
@@ -117,12 +121,11 @@
 				<th>Dishonesty</th>
 				<th>Action</th>
 			</tr>
-			<!--   <div style="height: 20px; width: {width}; background: {color};"></div> -->
 			{#each elites as elite}
 				<tr class="following">
 					<td>{@html elite.Elite}<br /></td>
 					<td>
-						<span id="score-display">{Number(elite.FalsityScore).toFixed(2)}<br /></span>
+						<span id="score-display">{(Number(elite.FalsityScore) * 100).toFixed(0)}<br /></span>
 						<div id="progress-bar">
 							<div
 								id="progress-bar-percentage"
