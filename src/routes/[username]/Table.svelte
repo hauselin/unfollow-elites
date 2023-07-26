@@ -85,52 +85,56 @@
 		'<p>Explore the scores and click the Unfollow button if you want to unfollow any account.</p>';
 </script>
 
-<section>
-	{#if follow_n > 1}
-		<p class="center-text">
-			Below are {follow_n} Twitter/X accounts you follow. {@html scoreExplainText}
-		</p>
-	{:else}
-		<p class="center-text">Below is a Twitter/X account you follow. {@html scoreExplainText}</p>
-	{/if}
+{#if status_value != 'cannot find user'}
+	<section>
+		{#if follow_n > 1}
+			<p class="center-text">
+				Below are {follow_n} Twitter/X accounts you follow. {@html scoreExplainText}
+			</p>
+		{:else}
+			<p class="center-text">Below is a Twitter/X account you follow. {@html scoreExplainText}</p>
+		{/if}
 
-	<div class="center">
-		<table>
-			<tr style="background-color:#94adc4">
-				<th>Account</th>
-				<th>Dishonesty</th>
-				<th>Action</th>
-			</tr>
-			{#each elites as elite}
-				<tr class="following">
-					<td>{@html elite.Elite}<br /></td>
-					<td>
-						<a
-							id="score-display"
-							href={elite.pflink}
-							target="_blank"
-							title="See PolitiFact Scorecard">{(Number(elite.FalsityScore) * 100).toFixed(0)}</a
-						>
-						<div id="progress-bar">
-							<div
-								id="progress-bar-percentage"
-								style="width: {determineWidthPercent(
-									elite.FalsityScore
-								)}%; background: {determineColor(elite.FalsityScore)};}"
-							/>
-						</div>
-					</td>
-					<td>
-						<button class="uButton" on:click|once={() => handleButtonClick(elite.username)}
-							>{followButtonStatus[elite.username]}</button
-						>
-					</td>
+		<div class="center">
+			<table>
+				<tr style="background-color:#94adc4">
+					<th>Account</th>
+					<th>Dishonesty</th>
+					<th>Action</th>
 				</tr>
-			{/each}
-		</table>
-		<br />
-	</div>
-</section>
+				{#each elites as elite}
+					<tr class="following">
+						<td>{@html elite.Elite}<br /></td>
+						<td>
+							<a
+								id="score-display"
+								href={elite.pflink}
+								target="_blank"
+								title="See PolitiFact Scorecard">{(Number(elite.FalsityScore) * 100).toFixed(0)}</a
+							>
+							<div id="progress-bar">
+								<div
+									id="progress-bar-percentage"
+									style="width: {determineWidthPercent(
+										elite.FalsityScore
+									)}%; background: {determineColor(elite.FalsityScore)};}"
+								/>
+							</div>
+						</td>
+						<td>
+							<button class="uButton" on:click|once={() => handleButtonClick(elite.username)}
+								>{followButtonStatus[elite.username]}</button
+							>
+						</td>
+					</tr>
+				{/each}
+			</table>
+			<br />
+		</div>
+	</section>
+{:else}
+	Unfortunately we cannot retrieve your user information.
+{/if}
 
 <style>
 	.center {
