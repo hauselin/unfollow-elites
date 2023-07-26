@@ -6,11 +6,12 @@
 	// import { page } from '$app/stores';
 
 	export let data;
-	const { username, scores, scores_obj, userurl, n_follow } = data;
+	const { username, scores, scores_obj, userurl, n_follow, elites } = data;
+	const following = elites.map((el) => el.username);
 </script>
 
 <section>
-	<Table following={scores_obj.following} follow_n={scores_obj.follow_n} {scores} />
+	<Table {username} {following} follow_n={n_follow} {scores} {elites} />
 </section>
 
 <style>

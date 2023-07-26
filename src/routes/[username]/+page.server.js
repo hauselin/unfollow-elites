@@ -1,10 +1,36 @@
 import { MISINFO_API } from '$env/static/private';
+import { FalsityScores } from '$lib/falsity_scores.js';
+
+FalsityScores.forEach((obj, i) => {
+	FalsityScores[i].elite_account = obj.elite_account.toLowerCase().trim();
+	FalsityScores[i].pf_link = obj.pf_link.toLowerCase().trim().replace("http", "https");
+});
+
+const getFalsityScore = (elite_account) => {
+	const obj = FalsityScores.filter((obj) => obj.elite_account === elite_account.toLowerCase().trim());
+	let score = '';
+	if (obj.length > 0) {
+		score = Number(obj[0].falsity_score).toFixed(3);
+	}
+	return score;
+};
+
+const getPfLink = (elite_account) => {
+	const obj = FalsityScores.filter((obj) => obj.elite_account === elite_account.toLowerCase());
+	let value = '';
+	if (obj.length > 0) {
+		value = obj[0].pf_link;
+		value = value.replace('http:', 'https:');
+	}
+	return value;
+};
 
 export async function load({ fetch, params }) {
 	let username = params.username.trim().toLowerCase();
 	let scores_obj = {};
 	let userurl = 'https://twitter.com/';
 	let userid = '';
+	let elites = [];
 
 	if (username == '') {
 		return 'nothing';
@@ -52,9 +78,32 @@ export async function load({ fetch, params }) {
 		}
 		// console.log('response', response);
 		// console.log('scores_obj', scores_obj);
+
+		let data = [];
+		let { following } = scores_obj;
+		// console.log(following);
+		if (scores_obj.follow_n > 0) {
+			following.forEach((val, i) => {
+				data.push({
+					i: i + 1,
+					username: val.toLowerCase().trim(),
+					FalsityScore: getFalsityScore(val),
+					pflink: getPfLink(val)
+				});
+			});
+		}
+		// sort values
+		data = data.sort((a, b) => (a.FalsityScore > b.FalsityScore ? -1 : 1));
+		// reset i values in data
+		data.forEach((val, i) => {
+			data[i].i = i + 1;
+		});
+		elites = data;
 	} else {
 		console.log('Fail to retrieve data');
 	}
-	return { username: username, scores: scores, scores_obj: scores_obj, userurl: userurl, n_follow: n_follow };
+	return { username: username, scores: scores, scores_obj: scores_obj, userurl: userurl, n_follow: n_follow, elites: elites };
 }
+
+
 

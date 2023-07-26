@@ -5,9 +5,11 @@
 	// TODO: add link to politifact page for each user (maybe hyperlink dishonesty score)
 	// https://www.politifact.com/personalities/alexandria-ocasio-cortez/
 
+	export let username;
 	export let following;
 	export let follow_n;
 	export let scores;
+	export let elites;
 	let followButtonStatus = {}; // keep track of click status of each button
 
 	if (!following) {
@@ -19,19 +21,21 @@
 
 	let status_value = '';
 	let follow_n_value = 0;
+
+	// send message to parent window on load
 	onMount(() => {
 		if (scores == 'nothing') {
-			console.log('cannot find user');
+			console.log(username, 'cannot find user');
 			status_value = 'cannot find user';
 			follow_n_value = 0;
 		}
 		if (follow_n == 0 && scores != 'nothing') {
-			console.log('not following any elites');
+			console.log(username, 'not following any elites');
 			status_value = 'found user';
 			follow_n_value = 0;
 		}
 		if (follow_n > 0) {
-			console.log('following elites');
+			console.log(username, 'following elites');
 			status_value = 'found user';
 			follow_n_value = follow_n;
 		}
@@ -41,32 +45,9 @@
 		localStorage.setItem('follow_n', follow_n_value);
 	});
 
-	FalsityScores.forEach((obj, i) => {
-		FalsityScores[i].elite_account = obj.elite_account.toLowerCase().trim();
-	});
-
-	const getFalsityScore = (elite_account) => {
-		const obj = FalsityScores.filter((obj) => obj.elite_account === elite_account.toLowerCase());
-		let score = '';
-		if (obj.length > 0) {
-			score = Number(obj[0].falsity_score).toFixed(3);
-		}
-		return score;
-	};
-
-	const getPfLink = (elite_account) => {
-		const obj = FalsityScores.filter((obj) => obj.elite_account === elite_account.toLowerCase());
-		let value = '';
-		if (obj.length > 0) {
-			value = obj[0].pf_link;
-			value = value.replace('http:', 'https:');
-		}
-		return value;
-	};
-
+	// determine color and width of progress bar (falsity score)
 	const determineColor = (score) => {
 		score = Number(score);
-		// return `rgba(237, 29, 36, ${score})`;
 		return `rgba(237, 29, 36, 1)`;
 	};
 
@@ -75,28 +56,22 @@
 		return Math.round(score * 100);
 	};
 
-	let data = [];
-	following.forEach((val, i) => {
-		data.push({
-			i: i + 1,
-			username: val.toLowerCase().trim(),
-			Elite:
-				"<a style='color:black' href='https://twitter.com/" +
-				val +
-				"' target='_blank' title='Twitter page' class='profile-link'>" +
-				'@' +
-				val +
-				'</a>',
-			FalsityScore: getFalsityScore(val),
-			pflink: getPfLink(val)
-		});
-		followButtonStatus[val.toLowerCase().trim()] = 'Unfollow';
+	// add link to twitter page for each user
+	elites.forEach((val, i) => {
+		elites[i]['Elite'] =
+			"<a style='color:black' href='https://twitter.com/" +
+			val.username +
+			"' target='_blank' title='Twitter page' class='profile-link'>" +
+			'@' +
+			val.username +
+			'</a>';
+		followButtonStatus[val.username.toLowerCase().trim()] = 'Unfollow';
 	});
-	// console.log(followButtonStatus);
 
+	// keep track of which elites are unfollowed/clicked
 	let elitesUnfollowed = '';
 	const handleButtonClick = (elite) => {
-		console.log('clicked', elite);
+		console.log('click-unfollow', elite);
 		elitesUnfollowed += 'https://twitter.com/' + elite + ';';
 		window.parent.postMessage({ message: 'iFrameData', value: elitesUnfollowed }, '*');
 		localStorage.setItem('unfollow', elitesUnfollowed); // store unfollowed account in local storage
@@ -104,14 +79,6 @@
 			followButtonStatus[elite] = 'X';
 		}
 	};
-
-	// sort values
-	data = data.sort((a, b) => (a.FalsityScore > b.FalsityScore ? -1 : 1));
-	// reset i values in data
-	data.forEach((val, i) => {
-		data[i].i = i + 1;
-	});
-	let elites = data;
 
 	const scoreExplainText =
 		'<p>Dishonesty scores range from <span style="color:#ed1d24; font-weight: bold;">100 (very dishonest)</span> to <span style="font-weight: bold;">0 (honest)</span>.</p>';
