@@ -114,7 +114,7 @@
 		<table>
 			<tr style="background-color:#94adc4">
 				<th>Account</th>
-				<th>Evaluation</th>
+				<th>Dishonesty</th>
 				<th>Action</th>
 			</tr>
 			<!--   <div style="height: 20px; width: {width}; background: {color};"></div> -->
@@ -122,7 +122,7 @@
 				<tr class="following">
 					<td>{@html elite.Elite}<br /></td>
 					<td>
-						{Number(elite.FalsityScore).toFixed(2)}<br />
+						<span id="score-display">{Number(elite.FalsityScore).toFixed(2)}<br /></span>
 						<div id="progress-bar">
 							<div
 								id="progress-bar-percentage"
@@ -195,5 +195,9 @@
 	}
 	#progress-bar-percentage {
 		height: 8px;
+	}
+	#score-display {
+		display: flex;
+		justify-content: center;
 	}
 </style>
