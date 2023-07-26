@@ -74,7 +74,11 @@
 		console.log('click-unfollow', elite);
 		elitesUnfollowed += 'https://twitter.com/' + elite + ';';
 		window.parent.postMessage({ message: 'unfollow', value: elitesUnfollowed }, '*');
-		localStorage.setItem('unfollow', elitesUnfollowed); // store unfollowed account in local storage
+		try {
+			localStorage.setItem('unfollow', elitesUnfollowed); // store unfollowed account in local storage
+		} catch (error) {
+			console.error(error);
+		}
 		if (followButtonStatus[elite] == 'Unfollow') {
 			followButtonStatus[elite] = 'X';
 		}
