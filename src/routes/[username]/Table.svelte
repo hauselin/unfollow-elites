@@ -56,7 +56,8 @@
 
 	const determineColor = (score) => {
 		score = Number(score);
-		return `rgba(237, 29, 36, ${score})`;
+		// return `rgba(237, 29, 36, ${score})`;
+		return `rgba(237, 29, 36, 1)`;
 	};
 
 	const determineWidthPercent = (score) => {
@@ -102,7 +103,7 @@
 	let elites = data;
 
 	const scoreExplainText =
-		'<p>Dishonesty scores range from <span style="color:#ed1d24; font-weight: bold;">100 (always dishonest)</span> to <span style="color:grey; font-weight: bold;">0 (never dishonest)</span>.</p>';
+		'<p>Dishonesty scores range from <span style="color:#ed1d24; font-weight: bold;">100 (very dishonest)</span> to <span style="font-weight: bold;">0 (honest)</span>.</p>';
 </script>
 
 <section>
