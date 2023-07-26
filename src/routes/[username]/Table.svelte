@@ -54,20 +54,14 @@
 		return score;
 	};
 
-	const gradeFromScore = (score) => {
-		if (score < 25) {
-			return 'Often lie';
-		}
-		if (score < 50) {
-			return 'Sometimes lie';
-		}
-		if (score < 75) {
-			return 'Occasionally lie';
-		}
-		if (score < 95) {
-			return 'Rarely lie';
-		}
-		return 'Never lie';
+	const determineColor = (score) => {
+		score = Number(score) * 100;
+		return `rgb(${score * 2.55}, ${255 - score * 2.55}, 0)`;
+	};
+
+	const determineWidthPercent = (score) => {
+		score = Number(score);
+		return Math.round(score * 100);
 	};
 
 	let data = [];
@@ -123,20 +117,19 @@
 				<th>Evaluation</th>
 				<th>Action</th>
 			</tr>
-
+			<!--   <div style="height: 20px; width: {width}; background: {color};"></div> -->
 			{#each elites as elite}
 				<tr class="following">
 					<td>{@html elite.Elite}<br /></td>
 					<td>
-						{gradeFromScore(100 * (1 - elite.FalsityScore))}<br />
-						<div id="progress-bar" class="all-rounded">
+						{Number(elite.FalsityScore).toFixed(2)}<br />
+						<div id="progress-bar">
 							<div
 								id="progress-bar-percentage"
-								class={'all-rounded ' + gradeFromScore(100 * (1 - elite.FalsityScore))}
-								style={'width:' + (20 + 100 * elite.FalsityScore) + '%'}
-							>
-								<span />
-							</div>
+								style="width: {determineWidthPercent(
+									elite.FalsityScore
+								)}%; background: {determineColor(elite.FalsityScore)};}"
+							/>
 						</div>
 					</td>
 					<td>
@@ -195,51 +188,12 @@
 		background-color: rgba(244, 33, 46, 0.1);
 		border-color: red;
 	}
-	.uftext {
-		align-items: center;
-		padding: 8px;
-	}
 	#progress-bar {
 		width: 100%;
 		height: 8px;
-		background: #cccccc;
-		position: relative;
-		overflow: hidden;
+		background: #ddd;
 	}
-	/* TODO: fix color */
-	#progress-bar-percentage.Frequently {
-		background: #ff0000;
-		padding: 5px 0px;
-		color: #fff;
-		text-align: center;
-		height: 20px;
-	}
-	#progress-bar-percentage.Sometimes {
-		background: #ff8000;
-		padding: 5px 0px;
-		color: #fff;
-		text-align: center;
-		height: 20px;
-	}
-	#progress-bar-percentage.Occasionally {
-		background: #ffff00;
-		padding: 5px 0px;
-		color: #fff;
-		text-align: center;
-		height: 20px;
-	}
-	#progress-bar-percentage.Rarely {
-		background: #00ff00;
-		padding: 5px 0px;
-		color: #fff;
-		text-align: center;
-		height: 20px;
-	}
-
-	#progress-bar-percentage span {
-		display: inline-block;
-		position: absolute;
-		width: 100%;
-		left: 0;
+	#progress-bar-percentage {
+		height: 8px;
 	}
 </style>
