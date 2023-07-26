@@ -81,7 +81,8 @@
 	};
 
 	const scoreExplainText =
-		'<p>Dishonesty scores range from <span style="color:#ed1d24; font-weight: bold;">100 (very dishonest)</span> to <span style="font-weight: bold;">0 (honest)</span>.</p>';
+		'<p>Dishonesty scores range from <span style="color:#ed1d24; font-weight: bold;">100 (very dishonest)</span> to <span style="font-weight: bold;">0 (honest)</span>.</p>' +
+		'<p>Explore the scores and click the Unfollow button if you want to unfollow any account.</p>';
 </script>
 
 <section>
