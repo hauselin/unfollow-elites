@@ -71,7 +71,7 @@
 			i: i + 1,
 			username: val.toLowerCase().trim(),
 			Elite:
-				"<a href='https://twitter.com/" +
+				"<a style='color:black' href='https://twitter.com/" +
 				val +
 				"' target='_blank' class='profile-link'>" +
 				'@' +
