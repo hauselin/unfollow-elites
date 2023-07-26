@@ -87,10 +87,10 @@
 <section>
 	{#if follow_n > 1}
 		<p class="center-text">
-			Below are {follow_n} accounts you follow. {@html scoreExplainText}
+			Below are {follow_n} Twitter/X accounts you follow. {@html scoreExplainText}
 		</p>
 	{:else}
-		<p class="center-text">Below is an account you follow. {@html scoreExplainText}</p>
+		<p class="center-text">Below is a Twitter/X account you follow. {@html scoreExplainText}</p>
 	{/if}
 
 	<div class="center">
@@ -108,7 +108,7 @@
 							id="score-display"
 							href={elite.pflink}
 							target="_blank"
-							title="See Politifact evaluation">{(Number(elite.FalsityScore) * 100).toFixed(0)}</a
+							title="See PolitiFact Scorecard">{(Number(elite.FalsityScore) * 100).toFixed(0)}</a
 						>
 						<div id="progress-bar">
 							<div
