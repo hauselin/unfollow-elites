@@ -2,6 +2,9 @@
 	import { FalsityScores } from '$lib/falsity_scores.js';
 	import { onMount } from 'svelte';
 
+	// TODO: add link to politifact page for each user
+	// https://www.politifact.com/personalities/alexandria-ocasio-cortez/
+
 	export let following;
 	export let follow_n;
 	export let scores;
@@ -61,7 +64,10 @@
 		if (score < 75) {
 			return 'Occasionally lie';
 		}
-		return 'Rarely lie';
+		if (score < 95) {
+			return 'Rarely lie';
+		}
+		return 'Never lie';
 	};
 
 	let data = [];
@@ -89,7 +95,7 @@
 		window.parent.postMessage({ message: 'iFrameData', value: elitesUnfollowed }, '*');
 		localStorage.setItem('unfollow', elitesUnfollowed); // store unfollowed account in local storage
 		if (followButtonStatus[elite] == 'Unfollow') {
-			followButtonStatus[elite] = 'Unfollowed!';
+			followButtonStatus[elite] = 'X';
 		}
 	};
 
@@ -127,7 +133,7 @@
 							<div
 								id="progress-bar-percentage"
 								class={'all-rounded ' + gradeFromScore(100 * (1 - elite.FalsityScore))}
-								style={'width:' + (20 + 100 * (1 - elite.FalsityScore)) + '%'}
+								style={'width:' + (20 + 100 * elite.FalsityScore) + '%'}
 							>
 								<span />
 							</div>
@@ -182,11 +188,11 @@
 		border-radius: 15px;
 		padding: 5px 15px;
 		cursor: pointer;
-		width: 98px;
+		width: 80px;
 	}
 	.uButton:hover {
 		color: red;
-		background-color: #ffffff;
+		background-color: rgba(244, 33, 46, 0.1);
 		border-color: red;
 	}
 	.uftext {
@@ -200,7 +206,7 @@
 		position: relative;
 		overflow: hidden;
 	}
-
+	/* TODO: fix color */
 	#progress-bar-percentage.Frequently {
 		background: #ff0000;
 		padding: 5px 0px;
