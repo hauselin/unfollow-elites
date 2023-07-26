@@ -54,6 +54,16 @@
 		return score;
 	};
 
+	const getPfLink = (elite_account) => {
+		const obj = FalsityScores.filter((obj) => obj.elite_account === elite_account.toLowerCase());
+		let value = '';
+		if (obj.length > 0) {
+			value = obj[0].pf_link;
+			value = value.replace('http:', 'https:');
+		}
+		return value;
+	};
+
 	const determineColor = (score) => {
 		score = Number(score);
 		// return `rgba(237, 29, 36, ${score})`;
@@ -73,11 +83,12 @@
 			Elite:
 				"<a style='color:black' href='https://twitter.com/" +
 				val +
-				"' target='_blank' class='profile-link'>" +
+				"' target='_blank' title='Twitter page' class='profile-link'>" +
 				'@' +
 				val +
 				'</a>',
-			FalsityScore: getFalsityScore(val)
+			FalsityScore: getFalsityScore(val),
+			pflink: getPfLink(val)
 		});
 		followButtonStatus[val.toLowerCase().trim()] = 'Unfollow';
 	});
@@ -126,7 +137,12 @@
 				<tr class="following">
 					<td>{@html elite.Elite}<br /></td>
 					<td>
-						<span id="score-display">{(Number(elite.FalsityScore) * 100).toFixed(0)}<br /></span>
+						<a
+							id="score-display"
+							href={elite.pflink}
+							target="_blank"
+							title="See Politifact evaluation">{(Number(elite.FalsityScore) * 100).toFixed(0)}</a
+						>
 						<div id="progress-bar">
 							<div
 								id="progress-bar-percentage"
