@@ -88,8 +88,10 @@
 		console.log(linkType, elite);
 		if (linkType == 'linksClickedTwitter') {
 			linksClickedTwitter += elite + ';';
+			window.parent.postMessage({ message: linkType, value: linksClickedTwitter }, '*');
 		} else if (linkType == 'linksClickedPF') {
 			linksClickedPF += elite + ';';
+			window.parent.postMessage({ message: linkType, value: linksClickedPF }, '*');
 		}
 		try {
 			localStorage.setItem('linksClickedTwitter', linksClickedTwitter);
@@ -97,7 +99,6 @@
 		} catch (error) {
 			console.error(error);
 		}
-		window.parent.postMessage({ message: linkType, value: elite }, '*');
 	};
 
 	const scoreExplainText =
