@@ -1,5 +1,4 @@
 <script>
-	import { FalsityScores } from '$lib/falsity_scores.js';
 	import { onMount } from 'svelte';
 
 	// https://www.politifact.com/personalities/alexandria-ocasio-cortez/
@@ -83,6 +82,24 @@
 		}
 	};
 
+	let linksClickedTwitter = '';
+	let linksClickedPF = '';
+	const handleLinkClick = (linkType, elite) => {
+		console.log(linkType, elite);
+		if (linkType == 'linksClickedTwitter') {
+			linksClickedTwitter += elite + ';';
+		} else if (linkType == 'linksClickedPF') {
+			linksClickedPF += elite + ';';
+		}
+		try {
+			localStorage.setItem('linksClickedTwitter', linksClickedTwitter);
+			localStorage.setItem('linksClickedPF', linksClickedPF);
+		} catch (error) {
+			console.error(error);
+		}
+		window.parent.postMessage({ message: linkType, value: elite }, '*');
+	};
+
 	const scoreExplainText =
 		'<p>Dishonesty scores range from <span style="color:#ed1d24; font-weight: bold;">100 (very dishonest)</span> to <span style="font-weight: bold;">0 (honest)</span>.</p>' +
 		'<p>Explore the scores and click the <strong>Unfollow</strong> button to unfollow an account.</p>' +
@@ -110,10 +127,13 @@
 				</tr>
 				{#each elites as elite}
 					<tr class="following">
-						<td>{@html elite.Elite}<br /></td>
+						<td on:click={() => handleLinkClick('linksClickedTwitter', elite.username)}
+							>{@html elite.Elite}<br /></td
+						>
 						<td>
 							<a
 								id="score-display"
+								on:click={() => handleLinkClick('linksClickedPF', elite.username)}
 								href={elite.pflink}
 								target="_blank"
 								title="See PolitiFact Scorecard">{(Number(elite.FalsityScore) * 100).toFixed(0)}</a
