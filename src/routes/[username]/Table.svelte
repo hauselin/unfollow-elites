@@ -139,8 +139,8 @@
 			<br />
 		</div>
 	</section>
-{:else}
-	Unfortunately we cannot retrieve your user information.
+{:else if follow_n == 0}
+	You do not follow any accounts in our database.
 {/if}
 
 <style>

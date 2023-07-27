@@ -54,8 +54,9 @@ export async function load({ fetch, params }) {
 	let n_follow = 0;
 	let scores = "nothing";
 	if (response) {
+		// if there's a message, if means error; otherwise no error
 		if (response.message) {
-			// console.log("Error: " + response.message);
+			console.log("Error: " + response.message);
 			scores_obj = {
 				username: username,
 				message: 'cannot find user'
