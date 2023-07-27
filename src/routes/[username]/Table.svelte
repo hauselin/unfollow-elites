@@ -2,7 +2,6 @@
 	import { FalsityScores } from '$lib/falsity_scores.js';
 	import { onMount } from 'svelte';
 
-	// TODO: add link to politifact page for each user (maybe hyperlink dishonesty score)
 	// https://www.politifact.com/personalities/alexandria-ocasio-cortez/
 
 	export let username;
