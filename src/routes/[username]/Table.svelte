@@ -86,17 +86,20 @@
 
 	const scoreExplainText =
 		'<p>Dishonesty scores range from <span style="color:#ed1d24; font-weight: bold;">100 (very dishonest)</span> to <span style="font-weight: bold;">0 (honest)</span>.</p>' +
-		'<p>Explore the scores and click the Unfollow button if you want to unfollow any account.</p>';
+		'<p>Explore the scores and click the <strong>Unfollow</strong> button to unfollow an account.</p>' +
+		'<p>You may have to scroll down to see more.</p>';
 </script>
 
 {#if status_value != 'cannot find user'}
 	<section>
 		{#if follow_n > 1}
 			<p class="center-text">
-				Below are {follow_n} Twitter/X accounts you follow. {@html scoreExplainText}
+				Below are <strong>{follow_n}</strong> Twitter/X accounts <strong>{username}</strong> follow. {@html scoreExplainText}
 			</p>
 		{:else}
-			<p class="center-text">Below is a Twitter/X account you follow. {@html scoreExplainText}</p>
+			<p class="center-text">
+				Below is a Twitter/X account <strong>{username}</strong> follow. {@html scoreExplainText}
+			</p>
 		{/if}
 
 		<div class="center">
