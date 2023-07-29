@@ -1,6 +1,5 @@
 <script>
 	import Table from './Table.svelte';
-
 	import { onMount } from 'svelte';
 	let referrer = '';
 
