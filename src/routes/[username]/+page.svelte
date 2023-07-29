@@ -1,6 +1,14 @@
 <script>
 	import Table from './Table.svelte';
 
+	import { onMount } from 'svelte';
+	let referrer = '';
+
+	onMount(() => {
+		referrer = document.referrer;
+		console.log('referrer:', referrer);
+	});
+
 	// https://kit.svelte.dev/docs/modules#$app-stores
 	// https://www.okupter.com/blog/sveltekit-query-parameters
 	// import { page } from '$app/stores';
